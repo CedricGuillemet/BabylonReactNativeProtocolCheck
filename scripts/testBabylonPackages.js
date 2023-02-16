@@ -1,7 +1,6 @@
 const fs = require('fs');
 const shelljs = require('shelljs');
 
-var exec = require('child_process').exec;
 function execute(command, workingDirectory, callback){
     const res = shelljs.exec(command, { fatal: false, cwd: workingDirectory, async: false });
     callback(res.code, res.stdout, res.stderr);
@@ -43,7 +42,7 @@ function patchTestScript() {
 function checkoutAndBuildBN(tag, hash, callback) {
     console.log("Submodule update.");
     execute('git submodule update --init --recursive', './', (error, stdout, stderr) => {
-        if (error) throw error;
+        //if (error) throw error;
         console.log(`Checkout tag ${hash}.`);
         execute(`git checkout ${hash}`, "./BabylonNative", (error, stdout, stderr) => {
             if (error) throw error;
@@ -107,8 +106,7 @@ function testPackages(tag, hash) {
     console.log(`Compatible versions for BabylonReactNative ${tag} using BabylonNative ${hash}:`, compatiblePackageVersions);
 }
 
-const BRNVersionToTest = BRNVersions[0];
-checkoutAndBuildBN(BRNVersionToTest.tag, BRNVersionToTest.hash,(tag, hash) => { testPackages(tag, hash); });
-/*
+BRNVersions.forEach((versionToTest) =>{
+    checkoutAndBuildBN(versionToTest.tag, versionToTest.hash,(tag, hash) => { testPackages(tag, hash); });
+});
 
-*/
