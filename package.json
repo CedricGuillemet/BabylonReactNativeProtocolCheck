@@ -1,0 +1,15 @@
+{
+  "name": "testcompatibility",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "testPackages": "node scripts/testBabylonPackages.js"
+  },
+  "dependencies": {
+    "babylonjs": "^5.42.2",
+    "babylonjs-gui": "^5.42.2",
+    "babylonjs-loaders": "^5.42.2",
+    "babylonjs-materials": "^5.42.2",
+    "shelljs": "^0.8.4"
+  }
+}
