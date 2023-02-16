@@ -106,7 +106,10 @@ function testPackages(tag, hash) {
     console.log(`Compatible versions for BabylonReactNative ${tag} using BabylonNative ${hash}:`, compatiblePackageVersions);
 }
 
-BRNVersions.forEach((versionToTest) =>{
+/*BRNVersions.forEach((versionToTest) =>{
     checkoutAndBuildBN(versionToTest.tag, versionToTest.hash,(tag, hash) => { testPackages(tag, hash); });
 });
+*/
+const versionToTest = BRNVersions[0];
+checkoutAndBuildBN(versionToTest.tag, versionToTest.hash,(tag, hash) => { testPackages(tag, hash); });
 
