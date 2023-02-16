@@ -12,10 +12,10 @@ function copy(source, destination) {
     console.log(`${source} was copied to ${destination}`);
 }
 
-const protocolChecker = "//BRNCHECK\r\nconsole.log('Checking Babylon.js / BabylonNative protocols');\r\n"+
+const protocolChecker = "//BRNCHECK\r\nconsole.log(' * Checking Babylon.js / BabylonNative protocols');\r\n"+
     "if (_native.Engine.PROTOCOL_VERSION !== BABYLON.NativeEngine.PROTOCOL_VERSION) {\r\n"+
-    "console.log(`Protocol version mismatch: ${_native.Engine.PROTOCOL_VERSION} (Native) !== ${BABYLON.NativeEngine.PROTOCOL_VERSION} (JS)`);\r\n"+
-    "TestUtils.exit(-1); } else { console.log('Protocol version OK! '); } TestUtils.exit(0);\r\n";
+    "console.log(` * Protocol version mismatch: ${_native.Engine.PROTOCOL_VERSION} (Native) !== ${BABYLON.NativeEngine.PROTOCOL_VERSION} (JS)`);\r\n"+
+    "TestUtils.exit(-1); } else { console.log(' * Protocol version OK! '); }\r\n";
 
 const exeFolder = './BabylonNative/build/Apps/ValidationTests/Release';
 const filesToCopy = [
@@ -103,8 +103,8 @@ function testPackages(tag, hash) {
                 // run validation test
                 console.log("Running validation tests.");
                 execute("ValidationTests", exeFolder, (error, stdout, stderr) => {
-                    console.log(stdout, stderr);
-                    if (error) {
+                    console.log(`Error Code ${error}`);
+                    if (!!error) {
                         console.log(`${version} Failed!`);
                     } else {
                         compatiblePackageVersions.push(version);
