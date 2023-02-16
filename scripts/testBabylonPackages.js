@@ -25,11 +25,11 @@ const filesToCopy = [
     {source:'babylonjs-materials', files:['babylonjs.materials.js', 'babylonjs.materials.js.map']}];
 
 const BRNVersions = [
-    /*{tag:'1.4.0', hash:'5859ffa'},
+    {tag:'1.4.0', hash:'5859ffa'},
     {tag:'1.4.1', hash:'70bb77a'},
     {tag:'1.4.2', hash:'5990087'},
     {tag:'1.4.3', hash:'301ab90'},
-    {tag:'1.4.4', hash:'75954f4'},*/
+    {tag:'1.4.4', hash:'75954f4'},
     {tag:'1.5.0', hash:'75954f4'},
     {tag:'1.5.1', hash:'a2cf1c7'}];
 
@@ -53,19 +53,23 @@ function checkoutAndBuildBN(tag, hash, callback) {
         console.log(`Checkout tag ${hash}.`);
         execute(`git checkout ${hash}`, "./BabylonNative", (error, stdout, stderr) => {
             if (error) throw error;
-            console.log('Making build directory.');
-            execute(`mkdir build`, "./BabylonNative", (error, stdout, stderr) => {
-                //if (error) throw error;
-                execute(`npm install`, "./BabylonNative/Apps", (error, stdout, stderr) => {
+            execute('git submodule update --init --recursive', './', (error, stdout, stderr) => {
+                console.log('Making build directory.');
+                fs.rmSync('./BabylonNative/build', { recursive: true, force: true });
+                execute(`mkdir build`, "./BabylonNative", (error, stdout, stderr) => {
                     if (error) throw error;
-                    console.log('Building win32 project.');
-                    execute(`cmake -G "Visual Studio 16 2019" -A x64 ..`, "./BabylonNative/build", (error, stdout, stderr) => {
+                    execute(`npm install`, "./BabylonNative/Apps", (error, stdout, stderr) => {
                         if (error) throw error;
-                        console.log('Building win32 apps.');
-                        execute(`cmake --build build --config Release`, "./BabylonNative", (error, stdout, stderr) => {
+                        console.log('Building win32 project.');
+
+                        execute(`cmake -G "Visual Studio 16 2019" -A x64 ..`, "./BabylonNative/build", (error, stdout, stderr) => {
                             if (error) throw error;
-                            patchTestScript();
-                            callback(tag, hash);
+                            console.log('Building win32 apps.');
+                            execute(`cmake --build build --config Release`, "./BabylonNative", (error, stdout, stderr) => {
+                                if (error) throw error;
+                                patchTestScript();
+                                callback(tag, hash);
+                            });
                         });
                     });
                 });
