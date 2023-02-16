@@ -21,9 +21,9 @@ jobs:
     - name: Run tests
       run: npm run testPackages
       working-directory: ./
-#    - name: Upload Result images artifact
-#      uses: actions/upload-artifact@v2
-#      with:
-#          name: ResultImages
-#          path: |
-#            buildWin32_x64/Apps/ValidationTests/Results
+    - name: Upload Result 
+      uses: actions/upload-artifact@v2
+      with:
+          name: NPMCompatibility
+          path: |
+            ./compatibility.json

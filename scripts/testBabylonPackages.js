@@ -1,6 +1,7 @@
 const fs = require('fs');
 const shelljs = require('shelljs');
 
+let compatibility = [];
 function execute(command, workingDirectory, callback){
     const res = shelljs.exec(command, { fatal: false, cwd: workingDirectory, async: false });
     callback(res.code, res.stdout, res.stderr);
@@ -23,8 +24,14 @@ const filesToCopy = [
     {source:'babylonjs-loaders', files:['babylonjs.loaders.js', 'babylonjs.loaders.js.map']},
     {source:'babylonjs-materials', files:['babylonjs.materials.js', 'babylonjs.materials.js.map']}];
 
-const BRNVersions = [{tag:'1.5.0', hash:'75954f4'},
-    {tag:'1.5.1', hash:'a2cf1c7}'}];
+const BRNVersions = [
+    /*{tag:'1.4.0', hash:'5859ffa'},
+    {tag:'1.4.1', hash:'70bb77a'},
+    {tag:'1.4.2', hash:'5990087'},
+    {tag:'1.4.3', hash:'301ab90'},
+    {tag:'1.4.4', hash:'75954f4'},
+    {tag:'1.5.0', hash:'75954f4'},*/
+    {tag:'1.5.1', hash:'a2cf1c7'}];
 
 
 function patchTestScript() {
@@ -104,12 +111,12 @@ function testPackages(tag, hash) {
         });
     });
     console.log(`Compatible versions for BabylonReactNative ${tag} using BabylonNative ${hash}:`, compatiblePackageVersions);
+    compatibility.push({tag:tag, hash:hash, npms:compatiblePackageVersions});
 }
 
-/*BRNVersions.forEach((versionToTest) =>{
+BRNVersions.forEach((versionToTest) =>{
     checkoutAndBuildBN(versionToTest.tag, versionToTest.hash,(tag, hash) => { testPackages(tag, hash); });
 });
-*/
-const versionToTest = BRNVersions[0];
-checkoutAndBuildBN(versionToTest.tag, versionToTest.hash,(tag, hash) => { testPackages(tag, hash); });
 
+// and out!
+fs.writeFileSync("compatibility.json", JSON.stringify(compatibility));
