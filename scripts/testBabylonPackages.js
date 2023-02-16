@@ -15,7 +15,7 @@ function copy(source, destination) {
 const protocolChecker = "//BRNCHECK\r\nconsole.log('Checking Babylon.js / BabylonNative protocols');\r\n"+
     "if (_native.Engine.PROTOCOL_VERSION !== BABYLON.NativeEngine.PROTOCOL_VERSION) {\r\n"+
     "console.log(`Protocol version mismatch: ${_native.Engine.PROTOCOL_VERSION} (Native) !== ${BABYLON.NativeEngine.PROTOCOL_VERSION} (JS)`);\r\n"+
-    "TestUtils.exit(-1); } else { console.log('Protocol version OK! '); }\r\n";
+    "TestUtils.exit(-1); } else { console.log('Protocol version OK! '); } TestUtils.exit(0);\r\n";
 
 const exeFolder = './BabylonNative/build/Apps/ValidationTests/Release';
 const filesToCopy = [
@@ -29,8 +29,8 @@ const BRNVersions = [
     {tag:'1.4.1', hash:'70bb77a'},
     {tag:'1.4.2', hash:'5990087'},
     {tag:'1.4.3', hash:'301ab90'},
-    {tag:'1.4.4', hash:'75954f4'},
-    {tag:'1.5.0', hash:'75954f4'},*/
+    {tag:'1.4.4', hash:'75954f4'},*/
+    {tag:'1.5.0', hash:'75954f4'},
     {tag:'1.5.1', hash:'a2cf1c7'}];
 
 
@@ -77,7 +77,7 @@ function checkoutAndBuildBN(tag, hash, callback) {
 function testPackages(tag, hash) {
     let compatiblePackageVersions = [];
     console.log("Getting NPM versions ...");
-    execute("npm show babylonjs@5.42.* version --json", "./", (error, stdout, stderr) => {
+    execute("npm show babylonjs@5.*.* version --json", "./", (error, stdout, stderr) => {
         if (error) throw error;
     
         const versions = JSON.parse(stdout);
