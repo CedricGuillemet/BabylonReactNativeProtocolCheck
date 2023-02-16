@@ -1,0 +1,29 @@
+name: Test compatibility
+on:
+  workflow_dispatch:
+    inputs:
+      NPM_Mack:
+        description: 'NPM versions mask'
+        required: true 
+        type: string
+        default: 5.42.*
+
+jobs:
+  build:
+    runs-on: windows-2019
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: NPM Install
+      run: npm install
+      working-directory: ./
+    - name: Run tests
+      run: npm run testPackages
+      working-directory: ./
+#    - name: Upload Result images artifact
+#      uses: actions/upload-artifact@v2
+#      with:
+#          name: ResultImages
+#          path: |
+#            buildWin32_x64/Apps/ValidationTests/Results
