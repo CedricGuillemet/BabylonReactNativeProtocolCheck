@@ -53,7 +53,7 @@ function checkoutAndBuildBN(tag, hash, callback) {
         console.log(`Checkout tag ${hash}.`);
         execute(`git checkout ${hash}`, "./BabylonNative", (error, stdout, stderr) => {
             if (error) throw error;
-            execute('git submodule update --init --recursive', './', (error, stdout, stderr) => {
+            execute('git submodule update --recursive', './BabylonNative', (error, stdout, stderr) => {
                 console.log('Making build directory.');
                 fs.rmSync('./BabylonNative/build', { recursive: true, force: true });
                 execute(`mkdir build`, "./BabylonNative", (error, stdout, stderr) => {
