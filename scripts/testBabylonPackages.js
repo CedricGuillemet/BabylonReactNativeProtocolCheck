@@ -15,7 +15,8 @@ function copy(source, destination) {
 const protocolChecker = "//BRNCHECK\r\nconsole.log(' * Checking Babylon.js / BabylonNative protocols');\r\n"+
     "if (_native.Engine.PROTOCOL_VERSION !== BABYLON.NativeEngine.PROTOCOL_VERSION) {\r\n"+
     "console.log(` * Protocol version mismatch: ${_native.Engine.PROTOCOL_VERSION} (Native) !== ${BABYLON.NativeEngine.PROTOCOL_VERSION} (JS)`);\r\n"+
-    "TestUtils.exit(-1); } else { console.log(' * Protocol version OK! '); }\r\n";
+    "TestUtils.exit(-1); } else { console.log(' * Protocol version OK! '); }\r\n"+
+    "console.error = function(errorMsg) { console.log(errorMsg); TestUtils.exit(-1);}\r\n";
 
 const exeFolder = './BabylonNative/build/Apps/ValidationTests/Release';
 const filesToCopy = [
